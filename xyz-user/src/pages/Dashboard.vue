@@ -60,7 +60,24 @@
           </template>
 
           <template #list="slotProps">
-            <div class="p-col-12 p-p-4">
+            <div class="p-col-6 p-p-4 product">
+              <div
+                class="bg"
+                :style="`background-image: url('${slotProps.data.imageUrl}');`"
+                alt="Shirt on Hanger"
+              ></div>
+
+              <div class="front">
+                <h1 class="head" data-v-1d81e2c0="">Shirt on Hanger</h1>
+                <span class="discription" data-v-1d81e2c0="">
+                  Washed Pressed and Hung,ironed and folded
+                </span>
+
+                <span class="price" data-v-1d81e2c0="">Rs.100</span>
+                <span class="addToCart"></span>
+              </div>
+            </div>
+            <!-- <div class="p-col-12 p-p-4">
               <div class="p-col-4">
                 <img
                   style="height: 100px"
@@ -74,7 +91,7 @@
                   {{ String(slotProps.data.selectedServices) }}
                 </span>
               </div>
-            </div>
+            </div> -->
           </template>
         </DataView>
       </Panel>
@@ -212,6 +229,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.bg {
+  height: 136px;
+  position: relative;
+  background-size: cover;
+  border-radius: 20px;
+  top: 50px;
+  transition: transform 0.6s;
+}
+
+.front {
+  position: relative;
+  border-radius: 20px;
+  background-color: #0e0c0c;
+  color: white;
+  padding: 20px;
+  top: -39px;
+  height: 166px;
+  left: -22px;
+}
+
+.product:hover .bg {
+  transform: translate(20px, -40px);
+}
+
+span.price {
+  background-color: grey;
+  padding: 10px;
+  position: relative;
+  top: 21px;
+  border-radius: 10px;
+}
 .product-name {
   font-size: 1.5rem;
   font-weight: 700;

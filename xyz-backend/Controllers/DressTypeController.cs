@@ -13,13 +13,11 @@ namespace xyz_backend.Controllers
         {
             _dressTypeService = dressTypeService;
         }
-
         [HttpPost]
         public IActionResult addDress(DressType dressType)
         {
             return Ok(_dressTypeService.addDress(dressType).Result);
         }
-
         [HttpGet("all")]
         public IActionResult getAll()
         {

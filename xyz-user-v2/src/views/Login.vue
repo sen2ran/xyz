@@ -30,6 +30,7 @@
           </button>
           <button
             class="intro-y button button--lg button--secondary w-full border mt-3"
+            @click="routeFn"
           >
             Sign up
           </button>
@@ -38,3 +39,14 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "Login",
+  methods: {
+    routeFn() {
+      this.$router.push("/sign-up");
+    }
+  }
+};
+</script>

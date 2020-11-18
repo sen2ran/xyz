@@ -39,65 +39,72 @@
 
     <div class="p-col-12 p-lg-8">
       <Panel header="Select Your Items" style="height: 100%">
-        <DataView
-          :value="allItems"
-          :layout="layout"
-          :paginator="true"
-          :rows="9"
-          :sortOrder="sortOrder"
-          :sortField="sortField"
-        >
-          <template #header>
-            <div class="p-grid p-nogutter">
-              <div v-for="(dressType, index) in dressTypes" :key="index">
-                <a @click="activeFn(index)">
-                  <img
-                    :src="`http://www.washapp.lk/images/category/${dressType.urlprefix.toLowerCase()}.png`"
-                  />
-                </a>
-              </div>
-            </div>
-          </template>
+        <!-- <div class="p-grid p-nogutter">
+          <div v-for="(dressType, index) in dressTypes" :key="index">
+            <a @click="activeFn(index)">
+              <img
+                :src="`http://www.washapp.lk/images/category/${dressType.urlprefix.toLowerCase()}.png`"
+              />
+            </a>
+          </div>
+        </div> -->
 
-          <template #list="slotProps">
-            <div class="p-col-6 p-p-4 product">
-              <div
-                class="bg"
-                :style="`background-image: url('${slotProps.data.imageUrl}');`"
-                alt="Shirt on Hanger"
-              ></div>
+        <div class="p-grid">
+          <div
+            class="p-lg-6 p-col-4 p-p-4 product"
+            v-for="data in allItems"
+            :key="data._id"
+          >
+            <div
+              class="bg"
+              :style="`background-image: url('${data.imageUrl}');`"
+              alt="Shirt on Hanger"
+            ></div>
 
-              <div class="front">
-                <h1 class="head" data-v-1d81e2c0="">Shirt on Hanger</h1>
-                <span class="discription" data-v-1d81e2c0="">
-                  Washed Pressed and Hung,ironed and folded
-                </span>
-
-                <span class="price" data-v-1d81e2c0="">Rs.100</span>
-                <span class="addToCart"></span>
+            <div class="front">
+              <div class="p-col-12 p-">
+                <h3 class="head">{{ data.name }}</h3>
               </div>
-            </div>
-            <!-- <div class="p-col-12 p-p-4">
-              <div class="p-col-4">
-                <img
-                  style="height: 100px"
-                  :src="slotProps.data.imageUrl"
-                  :alt="slotProps.data.name"
-                />
-              </div>
-              <div class="p-col-8">
-                <h1>{{ slotProps.data.name }}</h1>
-                <span>
-                  {{ String(slotProps.data.selectedServices) }}
+              <div class="p-col-12">
+                <span class="discription">
+                  {{ String(data.selectedServices) }}
                 </span>
               </div>
-            </div> -->
-          </template>
-        </DataView>
+              <div class="p-grid p-p-4">
+                <div class="p-col-6">
+                  <span class="price">Rs.{{ data.price }}</span>
+                </div>
+                <div class="p-col-6">
+                  <i
+                    class="pi pi-minus-circle"
+                    @click="minusFn(data.index)"
+                  ></i>
+                  <label class="quantity">{{ data.count }}</label>
+                  <i class="pi pi-plus-circle" @click="plusFn(data.index)"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </Panel>
     </div>
     <div class="p-col-12 p-lg-4">
-      <Panel header="Add To Card" style="height: 100%"> </Panel>
+      <Panel header="Add To Card" style="height: 100%">
+        <div
+          class="p-grid"
+          v-for="(data, arrayIndex) in addToCard"
+          :key="data.index"
+        >
+          <div class="p-col-4">
+            <img :src="data.imageUrl" height="50p" />
+          </div>
+          <div class="p-col-8">
+            {{ data.name }} <span>Rs.{{ data.price }} </span>
+            <label class="quantity"> * {{ data.count }}</label>
+          </div>
+          <div @click="removedFn(arrayIndex, data.index)">X</div>
+        </div>
+      </Panel>
     </div>
   </div>
 </template>
@@ -108,15 +115,6 @@ import { GetAll } from "../service/DressService";
 export default {
   data() {
     return {
-      layout: "list",
-      sortKey: null,
-      sortOrder: null,
-      sortField: null,
-      sortOptions: [
-        { label: "Price High to Low", value: "!price" },
-        { label: "Price Low to High", value: "price" },
-      ],
-
       dressTypes: [
         {
           index: 0,
@@ -143,48 +141,19 @@ export default {
         //   "Accessories",
         //   "Bedding",
       ],
-      //
-      tasksCheckbox: [],
       allItems: [],
-      dropdownCities: [
-        { name: "New York", code: "NY" },
-        { name: "Rome", code: "RM" },
-        { name: "London", code: "LDN" },
-        { name: "Istanbul", code: "IST" },
-        { name: "Paris", code: "PRS" },
-      ],
-      dropdownCity: null,
-      events: null,
-      products: null,
-      selectedProducts: null,
-      lineData: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
-        datasets: [
-          {
-            label: "Maintance",
-            data: [65, 59, 80, 81, 56, 55, 40],
-            fill: false,
-            backgroundColor: "#2f4860",
-            borderColor: "#2f4860",
-          },
-          {
-            label: "Rent",
-            data: [28, 48, 40, 19, 86, 27, 90],
-            fill: false,
-            backgroundColor: "#00bb7e",
-            borderColor: "#00bb7e",
-          },
-        ],
-      },
+      addToCard: [],
     };
+  },
+  watch: {
+    allItems: {
+      deep: true,
+      handler(val) {
+        let allItem = val;
+
+        this.addToCard = allItem.filter((x) => x.count > 0);
+      },
+    },
   },
   mounted() {
     this.initFn();
@@ -199,7 +168,13 @@ export default {
     async initFn() {
       try {
         let { data } = await GetAll();
-        this.allItems = data.data;
+        this.allItems = data.data.map((x, index) => {
+          return {
+            ...x,
+            count: 0,
+            index: index,
+          };
+        });
       } catch (error) {
         this.$toast.add({
           severity: "error",
@@ -208,6 +183,19 @@ export default {
           life: 3000,
         });
       }
+    },
+    minusFn(index) {
+      let allItems = JSON.parse(JSON.stringify(this.allItems));
+      allItems[index].count = allItems[index].count - 1;
+      this.allItems = allItems;
+    },
+    plusFn(index) {
+      let allItems = JSON.parse(JSON.stringify(this.allItems));
+      allItems[index].count = allItems[index].count + 1;
+      this.allItems = allItems;
+    },
+    removedFn(arrayIndex, index) {
+      console.log(arrayIndex, index);
     },
     onSortChange(event) {
       console.log(event);
@@ -244,22 +232,31 @@ export default {
   background-color: #0e0c0c;
   color: white;
   padding: 20px;
-  top: -39px;
-  height: 166px;
-  left: -22px;
-}
-
-.product:hover .bg {
-  transform: translate(20px, -40px);
+  height: 215px;
 }
 
 span.price {
   background-color: grey;
   padding: 10px;
   position: relative;
-  top: 21px;
   border-radius: 10px;
 }
+i.pi.pi-minus-circle {
+  margin: 6px;
+}
+i.pi.pi-plus-circle {
+  margin: 5px;
+}
+span.quantity {
+  margin: 5px;
+}
+.pi-minus-circle:hover {
+  color: #0000ffa6;
+}
+.pi-plus-circle:hover {
+  color: #0000ffa6;
+}
+/*--------------------------------------------------------------*/
 .product-name {
   font-size: 1.5rem;
   font-weight: 700;

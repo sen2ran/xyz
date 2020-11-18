@@ -38,7 +38,7 @@
     </div>
 
     <div class="p-col-12 p-lg-8">
-      <Panel header="Select Your Items" style="height: 100%">
+      <Panel header="Select Your Items" style="height: 100%"  class="gray">
         <!-- <div class="p-grid p-nogutter">
           <div v-for="(dressType, index) in dressTypes" :key="index">
             <a @click="activeFn(index)">
@@ -225,7 +225,9 @@ export default {
   top: 50px;
   transition: transform 0.6s;
 }
-
+.gray {
+  background-color: #0000ffa6;
+}
 .front {
   position: relative;
   border-radius: 20px;

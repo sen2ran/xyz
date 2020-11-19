@@ -1,4 +1,4 @@
-namespace  xyz_backend.Models
+namespace xyz_backend.Models
 {
     public class DatabaseSettings : IDatabaseSettings
     {
@@ -8,6 +8,7 @@ namespace  xyz_backend.Models
         public string OwnerCollectionName { get; set; }
         public string TenantCollectionName { get; set; }
         public string DressTypeCollectionName { get; set; }
+        public string OrdersCollectionName { get; set; }
         public string UserCollectionName { get; set; }
         public string AdminCollectionName { get; set; }
         public string LogCollectionName { get; set; }
@@ -23,6 +24,7 @@ namespace  xyz_backend.Models
         string UnitCollectionName { get; set; }
         string OwnerCollectionName { get; set; }
         string TenantCollectionName { get; set; }
+        string OrdersCollectionName { get; set; }
         string DressTypeCollectionName { get; set; }
         string UserCollectionName { get; set; }
         string AdminCollectionName { get; set; }

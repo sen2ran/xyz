@@ -2,27 +2,32 @@
   <AuthLayout>
     <div class="md:pl-16 fixed">
       <div
-        class="ml-auto xl:-ml-16 mr-auto xl:pl-16 pt-16 xl:h-screen w-auto sm:w-4/5 xl:w-auto grid grid-cols-12 gap-6"
+        class="xl:-ml-16 mr-auto xl:pl-16 pt-16 xl:h-screen w-auto sm:w-4/5 xl:w-auto grid grid-cols-12 gap-6"
       >
         <div
           class="chat-box col-span-12 xl:col-span-8 flex flex-col overflow-hidden xl:border-l xl:border-r p-6"
         >
           <div class="intro-y text-xl font-medium pb-2">
-            Select Item for Laundry
+            Select Item for Laundry 2 {{ searchVal }}
           </div>
           <div class="intro-y chat-input border flex items-center px-5 py-4">
             <textarea
               class="input w-full h-16 resize-none border-transparent px-5 py-3 focus:shadow-none truncate mr-3 sm:mr-0"
               rows="1"
+              v-model="searchVal"
               placeholder="Search"
               autocomplete="off"
               spellcheck="false"
             ></textarea>
           </div>
+
           <div
             class="overflow-y-scroll scrollbar-hidden flex flex-wrap -mx-1 lg:-mx-4"
           >
-            <template v-for="singleItem in allItems" :key="singleItem.index">
+            <template
+              v-for="singleItem in filteredList"
+              :key="singleItem.index"
+            >
               <SingleDress
                 :item="singleItem"
                 @minusFn="minusFn"
@@ -230,7 +235,8 @@ export default {
       addToCard: [],
       isHigh: false,
       isPayment: false,
-      address: null
+      address: null,
+      searchVal: null
     };
   },
   mounted() {
@@ -240,6 +246,16 @@ export default {
     ...mapGetters({
       user: "getUser"
     }),
+    filteredList() {
+      console.log(this.searchVal);
+      if (this.searchVal) {
+        return this.allItems.filter(item => {
+          return this.searchVal.indexOf(item.name) > -1;
+        });
+      } else {
+        return this.allItems;
+      }
+    },
     computedPrice() {
       let price = 0;
       for (let i = 0; i < this.addToCard.length; i++) {
@@ -252,14 +268,6 @@ export default {
         subtotal: price,
         total: total
       };
-    }
-  },
-  watch: {
-    allItems: {
-      deep: true,
-      handler(val) {
-        console.log(val);
-      }
     }
   },
   methods: {
@@ -328,14 +336,24 @@ export default {
     async paymentFn() {
       let payload = {
         userId: this.user.id,
-        addToCard: this.addToCard,
+        addToCard: this.addToCard.map(x => {
+          let tmpX = { ...x };
+          tmpX.dressId = x.id;
+          delete x["id"];
+          return tmpX;
+        }),
         isHigh: this.isHigh,
-        address: this.address
+        address: this.address,
+        subtotal: this.computedPrice.subtotal,
+        total: this.computedPrice.total
       };
       try {
         let { data } = await MakeOrder(payload);
         if (data.success) {
           this.isPayment = false;
+          this.addToCard = [];
+          this.isHigh = false;
+          this.address = null;
         }
       } catch (error) {
         console.log(error);

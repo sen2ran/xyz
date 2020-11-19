@@ -14,7 +14,7 @@ using Microsoft.Extensions.Options;
 using xyz_backend.Models;
 using xyz_backend.Services;
 
-namespace  xyz_backend
+namespace xyz_backend
 {
     public class Startup
     {
@@ -32,12 +32,14 @@ namespace  xyz_backend
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             services.AddSingleton<RoleService>();
-             services.AddSingleton<DressTypeService>();
+            services.AddSingleton<DressTypeService>();
             services.AddSingleton<SecurityService>();
             services.AddSingleton<UserService>();
             services.AddSingleton<AdminService>();
             services.AddSingleton<ApartmentService>();
             services.AddSingleton<OwnerService>();
+            services.AddSingleton<OrderService>();
+
 
 
             services.AddCors(options =>

@@ -1,7 +1,7 @@
 <template>
   <!-- BEGIN: Top Bar -->
   <div class="top-bar top-0 left-0 fixed w-full h-16">
-    <div class="-intro-y top-bar__content border-b w-full h-full flex px-5">
+    <div class="top-bar__content border-b w-full h-full flex px-5">
       <!-- BEGIN: Logo -->
       <a class="hidden md:flex items-center h-full mr-auto">
         <img
@@ -83,7 +83,7 @@
   </div>
   <div class="side-menu hidden md:block top-0 left-0 fixed w-16 h-screen">
     <div
-      class="side-menu__content -intro-x border-r w-full h-full pt-16 flex flex-col justify-center overflow-hidden"
+      class="side-menu__content border-r w-full h-full pt-16 flex flex-col justify-center overflow-hidden"
     >
       <a
         class="-intro-x relative tooltip py-5 tooltipstered"

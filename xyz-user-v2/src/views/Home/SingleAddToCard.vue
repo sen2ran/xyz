@@ -1,18 +1,16 @@
 <template>
-  <div class="flex justify-between border-b px-4 zoom-in">
+  <div class="intro-y flex justify-between border-b px-4 zoom-in">
     <div class="p-2 w-24">
-      <img
-        src="http://www.washapp.lk/images/product/Shirt_on_Hanger.jpg"
-        alt="img product"
-      />
+      <img :src="singleItem.imageUrl" alt="img product" />
     </div>
     <div class="flex-auto text-sm w-32 m-2">
-      <div class="font-bold text-gray-800">Product 2</div>
-      <div class="text-gray-400">Qt: 2</div>
+      <div class="font-bold text-gray-800">{{ singleItem.name }}</div>
+      <div class="text-gray-400">Qt: {{ singleItem.count }}</div>
     </div>
     <div class="flex flex-col w-18 font-medium items-end">
       <div
         class="w-4 h-4 mb-6 hover:bg-red-200 rounded-full cursor-pointer text-red-700"
+        @click="$emit('delete-fn', singleItem)"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +32,14 @@
           <line x1="14" y1="11" x2="14" y2="17"></line>
         </svg>
       </div>
-      $12.22
+      Rs.{{ singleItem.price }}
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "singleAddtoCard",
+  props: ["singleItem"]
+};
+</script>

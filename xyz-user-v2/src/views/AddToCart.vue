@@ -1,6 +1,5 @@
 <template>
   <AuthLayout>
-    \
     <div class="md:pl-16 fixed">
       <div
         class="ml-auto xl:-ml-16 mr-auto xl:pl-16 pt-16 xl:h-screen w-auto sm:w-4/5 xl:w-auto grid grid-cols-12 gap-6"
@@ -36,11 +35,42 @@
           class="chat-box col-span-12 xl:col-span-4 flex flex-col overflow-hidden xl:border-l xl:border-r p-6"
         >
           <div class="intro-y text-xl font-medium">Add to Card</div>
-          <div class="overflow-y-scroll scrollbar-hidden intro-y chat-input">
+
+          <div v-if="addToCard.length == 0">Please Add items</div>
+
+          <div
+            class="flex justify-between border-b"
+            v-if="addToCard.length > 0"
+          >
+            <div
+              class="lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-center text-gray-800"
+            >
+              Priority
+            </div>
+            <div
+              class="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900"
+            >
+              <input
+                type="checkbox"
+                v-model="isHigh"
+                class="input input--switch border"
+              />
+            </div>
+          </div>
+
+          <div
+            class="overflow-y-scroll scrollbar-hidden intro-y chat-input"
+            v-if="addToCard.length > 0"
+          >
             <div class="p-2">
               <p class="mb-6 italic"></p>
-              <SingleAddToCard />
 
+              <template v-for="singleItem in addToCard" :key="singleItem._id">
+                <SingleAddToCard
+                  :singleItem="singleItem"
+                  @deleteFn="deleteFn"
+                />
+              </template>
               <div class="flex justify-between border-b">
                 <div
                   class="lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-center text-gray-800"
@@ -50,19 +80,19 @@
                 <div
                   class="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900"
                 >
-                  148,827.53€
+                  Rs {{ computedPrice.subtotal }}
                 </div>
               </div>
               <div class="flex justify-between pt-4 border-b">
                 <div
                   class="lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-center text-gray-800"
                 >
-                  Tax
+                  Priority : {{ isHigh ? "High" : "Normal" }}
                 </div>
                 <div
                   class="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900"
                 >
-                  2,976.55€
+                  Rs. {{ isHigh ? 100 : "-" }}
                 </div>
               </div>
               <div class="flex justify-between pt-4 border-b">
@@ -74,11 +104,12 @@
                 <div
                   class="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900"
                 >
-                  17,859.3€
+                  Rs. {{ computedPrice.total }}
                 </div>
               </div>
               <button
                 class="flex justify-center w-full px-2 py-3 mt-6 font-medium text-white uppercase bg-gray-800 rounded-full shadow item-center hover:bg-gray-700 focus:shadow-outline focus:outline-none"
+                @click="orderFn"
               >
                 <span class="ml-2 mt-5px">Procceed to checkout</span>
               </button>
@@ -86,14 +117,105 @@
           </div>
         </div>
       </div>
-    </div></AuthLayout
-  >
+    </div>
+    <div
+      class="modal-invite-friends modal overflow-y-auto"
+      :class="isPayment ? 'show' : ''"
+      id="invite-friends-modal"
+      style="margin-top: 0px; margin-left: 0px; padding-left: 0px; z-index: 53"
+    >
+      <div class="modal__content p-4">
+        <div class="intro-y text-lg font-medium">Checkout</div>
+        <div
+          class="modal__content__scrollable overflow-y-auto scrollbar-hidden -mx-4 px-4 mt-4"
+        >
+          <div class="intro-y pb-3">
+            <div class="intro-y block">
+              <div
+                class="user-list__item relative flex items-center px-4 py-3 mt-4"
+              >
+                <div class="ml-2 overflow-hidden">
+                  <div class="intro-y block">
+                    <div
+                      class="user-list__item cursor-pointer relative flex items-center zoom-in"
+                    >
+                      <div class="ml-2 overflow-hidden">
+                        <a
+                          href="javascript:;"
+                          class="user-list__item__name font-medium"
+                          >Hai ,{{ user.name }}</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center text-xs py-2">
+                    <div class="user-list__item__text truncate auth">
+                      <input
+                        type="text"
+                        class="auth__input input input--lg w-full border block"
+                        v-model="address"
+                        placeholder="Enter The Address "
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between border-b">
+              <div
+                class="lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-center text-gray-800"
+              >
+                Subtotal
+              </div>
+              <div
+                class="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900"
+              >
+                Rs {{ computedPrice.subtotal }}
+              </div>
+            </div>
+            <div class="flex justify-between pt-4 border-b">
+              <div
+                class="lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-center text-gray-800"
+              >
+                Priority : {{ isHigh ? "High" : "Normal" }}
+              </div>
+              <div
+                class="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900"
+              >
+                Rs. {{ isHigh ? 100 : "-" }}
+              </div>
+            </div>
+            <div class="flex justify-between pt-4 border-b">
+              <div
+                class="lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-center text-gray-800"
+              >
+                Total
+              </div>
+              <div
+                class="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900"
+              >
+                Rs. {{ computedPrice.total }}
+              </div>
+            </div>
+          </div>
+          <div class="user-list__action user-list__action--action -mx-4 px-4">
+            <button class="button button--primary w-full" @click="paymentFn">
+              Pay
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </AuthLayout>
 </template>
 <script>
 import AuthLayout from "@/Layout/AuthLayout";
 import SingleDress from "./Home/SingleDress";
 import SingleAddToCard from "./Home/SingleAddToCard";
-import { GetAll } from "../service/DressService";
+import { GetAll, MakeOrder } from "../service/DressService";
+
+import { mapGetters } from "vuex";
 
 export default {
   name: "Orders",
@@ -105,11 +227,40 @@ export default {
   data() {
     return {
       allItems: [],
-      addToCard: []
+      addToCard: [],
+      isHigh: false,
+      isPayment: false,
+      address: null
     };
   },
   mounted() {
     this.initFn();
+  },
+  computed: {
+    ...mapGetters({
+      user: "getUser"
+    }),
+    computedPrice() {
+      let price = 0;
+      for (let i = 0; i < this.addToCard.length; i++) {
+        price = price + this.addToCard[i].count * this.addToCard[i].price;
+      }
+      let highPrice = this.isHigh ? 100 : 0;
+      let total = price + highPrice;
+
+      return {
+        subtotal: price,
+        total: total
+      };
+    }
+  },
+  watch: {
+    allItems: {
+      deep: true,
+      handler(val) {
+        console.log(val);
+      }
+    }
   },
   methods: {
     async initFn() {
@@ -130,16 +281,65 @@ export default {
       let allItems = JSON.parse(JSON.stringify(this.allItems));
       allItems[e.index].count = allItems[e.index].count - 1;
       this.allItems = allItems;
-      this.addToCardFn(e);
+      this.addToCardFn(e, false);
     },
     plusFn(e) {
       let allItems = JSON.parse(JSON.stringify(this.allItems));
       allItems[e.index].count = allItems[e.index].count + 1;
       this.allItems = allItems;
-      this.addToCardFn(e);
+      this.addToCardFn(e, true);
     },
-    addToCardFn(item) {
-      console.log(item);
+    addToCardFn(item, isPlus) {
+      if (this.addToCard.length > 0) {
+        let addToCard = JSON.parse(JSON.stringify(this.addToCard));
+        let index = addToCard.findIndex(
+          x => x.id == this.allItems[item.index].id
+        );
+        if (index >= 0) {
+          addToCard[index].count = isPlus
+            ? addToCard[index].count + 1
+            : addToCard[index].count - 1;
+        } else {
+          addToCard.push({
+            ...item,
+            count: 1
+          });
+        }
+        this.addToCard = addToCard;
+      } else {
+        this.addToCard.push({
+          ...item,
+          count: 1
+        });
+      }
+    },
+    deleteFn(e) {
+      let addToCardIndex = this.addToCard.findIndex(x => x.id == e.id);
+      let allItemsIndex = this.allItems.findIndex(x => x.id == e.id);
+
+      this.addToCard.splice(addToCardIndex, 1);
+      this.allItems[allItemsIndex].count = 0;
+
+      console.log(addToCardIndex, allItemsIndex);
+    },
+    orderFn() {
+      this.isPayment = true;
+    },
+    async paymentFn() {
+      let payload = {
+        userId: this.user.id,
+        addToCard: this.addToCard,
+        isHigh: this.isHigh,
+        address: this.address
+      };
+      try {
+        let { data } = await MakeOrder(payload);
+        if (data.success) {
+          this.isPayment = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };

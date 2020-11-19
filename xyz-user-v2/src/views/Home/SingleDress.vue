@@ -1,6 +1,6 @@
 <template>
   <div
-    class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3 border-transparent zoom-in"
+    class="intro-y my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3 border-transparent zoom-in"
   >
     <article class="overflow-hidden rounded-lg shadow-lg m-2">
       <a href="#">

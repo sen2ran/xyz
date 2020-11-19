@@ -7,3 +7,11 @@ export const GetAll = async payload => {
     return error;
   }
 };
+
+export const MakeOrder = async payload => {
+  try {
+    return await Instance.instance.post(`/order`, payload);
+  } catch (error) {
+    return error;
+  }
+};

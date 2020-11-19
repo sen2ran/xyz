@@ -6,7 +6,8 @@ export default createStore({
       email: null,
       name: null,
       isApproved: null
-    }
+    },
+    addToCart: []
   },
   mutations: {
     setUser(state, payload) {

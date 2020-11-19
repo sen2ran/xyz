@@ -1,6 +1,6 @@
 import Instance from "./instance";
 
-export const Login = async (payload) => {
+export const Login = async payload => {
   try {
     return await Instance.instance.post(`/auth/user`, payload);
   } catch (error) {
@@ -8,7 +8,7 @@ export const Login = async (payload) => {
   }
 };
 
-export const Registration = async (payload) => {
+export const Registration = async payload => {
   try {
     return await Instance.instance.post(`/user`, payload);
   } catch (error) {
@@ -16,8 +16,7 @@ export const Registration = async (payload) => {
   }
 };
 
-
-export const Auth = async (payload) => {
+export const Auth = async payload => {
   try {
     return await Instance.instanceToken.get(`/auth`, payload);
   } catch (error) {

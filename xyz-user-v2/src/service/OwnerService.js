@@ -1,6 +1,6 @@
 import Instance from "./instance";
 
-export const AddOwner = async (payload) => {
+export const AddOwner = async payload => {
   try {
     return await Instance.instance.post(`/owner`, payload);
   } catch (error) {
@@ -16,7 +16,7 @@ export const AddOwner = async (payload) => {
 //   }
 // };
 
-export const GetAll = async (payload) => {
+export const GetAll = async payload => {
   try {
     return await Instance.instance.get(`/owner/all`, payload);
   } catch (error) {
@@ -24,7 +24,7 @@ export const GetAll = async (payload) => {
   }
 };
 
-export const GetOwnerByName = async (payload) => {
+export const GetOwnerByName = async payload => {
   try {
     return await Instance.instance.get(`/owner/list/${payload}`);
   } catch (error) {

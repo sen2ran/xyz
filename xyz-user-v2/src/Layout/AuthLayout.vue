@@ -171,13 +171,13 @@ export default {
   name: "AuthLayout",
   data() {
     return {
-      isProfileSet: false,
+      isProfileSet: false
     };
   },
   computed: {
     ...mapGetters({
       user: "getUser"
-    }),
+    })
   },
   methods: {
     routFn(el) {
@@ -186,7 +186,7 @@ export default {
     logoutFn() {
       localStorage.clear();
       window.location.href = "/login";
-    },
-  },
+    }
+  }
 };
 </script>

@@ -44,6 +44,6 @@
 <script>
 export default {
   name: "singleItem",
-  props: ["item"],
+  props: ["item"]
 };
 </script>

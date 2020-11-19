@@ -9,6 +9,6 @@ export default {
     if (localStorage.getItem("user")) {
       this.$store.dispatch("setUser", JSON.parse(localStorage.getItem("user")));
     }
-  },
+  }
 };
 </script>

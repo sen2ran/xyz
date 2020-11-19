@@ -1,6 +1,6 @@
 import Instance from "./instance";
 
-export const AddApartment = async (payload) => {
+export const AddApartment = async payload => {
   try {
     return await Instance.instance.post(`/apartment`, payload);
   } catch (error) {
@@ -8,7 +8,7 @@ export const AddApartment = async (payload) => {
   }
 };
 
-export const EditApartment = async (payload) => {
+export const EditApartment = async payload => {
   try {
     return await Instance.instance.put(`/apartment`, payload);
   } catch (error) {
@@ -16,7 +16,7 @@ export const EditApartment = async (payload) => {
   }
 };
 
-export const GetAll = async (payload) => {
+export const GetAll = async payload => {
   try {
     return await Instance.instance.get(`/apartment/all`, payload);
   } catch (error) {
@@ -24,7 +24,7 @@ export const GetAll = async (payload) => {
   }
 };
 
-export const DeleteApartment = async (payload) => {
+export const DeleteApartment = async payload => {
   try {
     return await Instance.instance.delete(`/user/${payload}`);
   } catch (error) {
@@ -32,7 +32,7 @@ export const DeleteApartment = async (payload) => {
   }
 };
 
-export const GetAllUnit = async (payload) => {
+export const GetAllUnit = async payload => {
   try {
     return await Instance.instance.get(`/apartment/single/${payload}`);
   } catch (error) {
@@ -40,7 +40,7 @@ export const GetAllUnit = async (payload) => {
   }
 };
 
-export const AddUnit = async (payload) => {
+export const AddUnit = async payload => {
   try {
     return await Instance.instance.post(
       `/apartment/single/${payload.apartmentId}`,

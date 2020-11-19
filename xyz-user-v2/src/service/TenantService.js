@@ -1,6 +1,6 @@
 import Instance from "./instance";
 
-export const AddTenant = async (payload) => {
+export const AddTenant = async payload => {
   try {
     return await Instance.instance.post(`/tenant`, payload);
   } catch (error) {
@@ -16,7 +16,7 @@ export const AddTenant = async (payload) => {
 //   }
 // };
 
-export const GetAll = async (payload) => {
+export const GetAll = async payload => {
   try {
     return await Instance.instance.get(`/tenant/all`, payload);
   } catch (error) {

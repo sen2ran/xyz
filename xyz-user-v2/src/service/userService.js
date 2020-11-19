@@ -1,6 +1,6 @@
 import Instance from "./instance";
 
-export const AddUser = async (payload) => {
+export const AddUser = async payload => {
   try {
     return await Instance.instance.post(`/user`, payload);
   } catch (error) {
@@ -8,7 +8,7 @@ export const AddUser = async (payload) => {
   }
 };
 
-export const EditUser = async (payload) => {
+export const EditUser = async payload => {
   try {
     return await Instance.instance.put(`/user`, payload);
   } catch (error) {
@@ -16,7 +16,7 @@ export const EditUser = async (payload) => {
   }
 };
 
-export const GetAll = async (payload) => {
+export const GetAll = async payload => {
   try {
     return await Instance.instance.get(`/user/all`, payload);
   } catch (error) {
@@ -24,7 +24,7 @@ export const GetAll = async (payload) => {
   }
 };
 
-export const DeleteUser = async (payload) => {
+export const DeleteUser = async payload => {
   try {
     return await Instance.instance.delete(`/user/${payload}`);
   } catch (error) {

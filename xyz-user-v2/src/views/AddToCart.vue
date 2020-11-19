@@ -100,12 +100,12 @@ export default {
   components: {
     SingleDress,
     SingleAddToCard,
-    AuthLayout,
+    AuthLayout
   },
   data() {
     return {
       allItems: [],
-      addToCard: [],
+      addToCard: []
     };
   },
   mounted() {
@@ -119,7 +119,7 @@ export default {
           return {
             ...x,
             count: 0,
-            index: index,
+            index: index
           };
         });
       } catch (error) {
@@ -140,7 +140,7 @@ export default {
     },
     addToCardFn(item) {
       console.log(item);
-    },
-  },
+    }
+  }
 };
 </script>

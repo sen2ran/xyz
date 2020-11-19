@@ -14,20 +14,25 @@
           <input
             type="text"
             class="intro-y auth__input input input--lg w-full border block"
+            v-model="email"
             placeholder="Email"
           />
           <input
             type="password"
             class="intro-y auth__input input input--lg w-full border block mt-4"
+            v-model="password"
             placeholder="Password"
           />
         </div>
         <div class="intro-y mt-5 xl:mt-8 text-center xl:text-left">
+          <div class="pb-2 text-center">
+            <span class="text-sm text-red-700">{{ loginError }}</span>
+          </div>
           <button
             class="intro-y button button--lg button--primary w-full xl:mr-3"
             @click="loginFn"
           >
-            Login
+            {{ loginString }}
           </button>
           <button
             class="intro-y button button--lg button--secondary w-full border mt-3"
@@ -42,15 +47,48 @@
 </template>
 
 <script>
+import { Login } from "../service/LoginService";
+
 export default {
   name: "Login",
+  data() {
+    return {
+      loginError: null,
+      email: null,
+      emailError: null,
+      password: null,
+      passwordError: null,
+      loginString: "Login"
+    };
+  },
   methods: {
     routeFn() {
       this.$router.push("/sign-up");
     },
-    loginFn() {
-      this.$router.push("/");
-    }
-  }
+    async loginFn() {
+      this.loginString = "Loading...";
+      let payload = {
+        email: this.email,
+        password: this.password
+      };
+      try {
+        let { data } = await Login(payload);
+        if (data.success) {
+          localStorage.setItem("user", JSON.stringify(data.data));
+          this.$store.dispatch("setUser", data.data);
+          this.$router.push("/");
+          this.loginString = "Login";
+        } else {
+          this.loginError = data.message;
+          setTimeout(() => {
+            this.loginError = "";
+            this.loginString = "Login";
+          }, 2000);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
 };
 </script>

@@ -7,7 +7,7 @@
         <img
           alt="Placeholder"
           class="block h-auto w-full"
-          src="http://www.washapp.lk/images/product/Shirt_on_Hanger.jpg"
+          :src="item.imageUrl"
         />
       </a>
 
@@ -16,25 +16,34 @@
       >
         <h1 class="text-lg">
           <a class="no-underline hover:underline text-black" href="#">
-            Shirt on Hanger
+            {{ item.name }} (Rs.{{ item.price }})
           </a>
         </h1>
       </header>
-      <p class="ml-2 text-xs mx-4">Washed Pressed and Hung</p>
+      <p class="ml-2 text-xs mx-4">{{ String(item.selectedServices) }}</p>
 
       <footer class="flex items-center justify-between leading-none p-2 md:p-4">
         <button
           class="px-6 py-2 transition ease-in duration-200 uppercase rounded-full hover:bg-gray-800 hover:text-white border-2 border-gray-900 focus:outline-none"
-        >
-          +
-        </button>
-        <h1>0</h1>
-        <button
-          class="px-6 py-2 transition ease-in duration-200 uppercase rounded-full hover:bg-gray-800 hover:text-white border-2 border-gray-900 focus:outline-none"
+          @click="$emit('minus-fn', item)"
         >
           -
+        </button>
+        <h1>{{ item.count }}</h1>
+        <button
+          class="px-6 py-2 transition ease-in duration-200 uppercase rounded-full hover:bg-gray-800 hover:text-white border-2 border-gray-900 focus:outline-none"
+          @click="$emit('plus-fn', item)"
+        >
+          +
         </button>
       </footer>
     </article>
   </div>
 </template>
+
+<script>
+export default {
+  name: "singleItem",
+  props: ["item"],
+};
+</script>

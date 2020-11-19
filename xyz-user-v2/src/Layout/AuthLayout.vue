@@ -35,209 +35,6 @@
           <line x1="6" y1="20" x2="6" y2="14"></line>
         </svg>
       </a>
-      <!-- 
-      <div class="hidden md:flex items-center px-5">
-        <a
-          href="javascript:;"
-          data-toggle="modal"
-          data-target="#invite-friends-modal"
-          class="button button--primary shadow-md"
-          >Invite Friends</a
-        >
-      </div> -->
-      <!-- BEGIN: Notifications -->
-      <div class="notification-dropdown dropdown relative">
-        <a
-          @click="isProfileSet = !isProfileSet"
-          class="notification-dropdown__toggler dropdown-toggle h-full flex items-center px-5 relative -mr-3 md:mr-0 md:border-l md:border-r"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-bell w-5 h-5"
-          >
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-          </svg>
-          <div
-            class="notification-dropdown__toggler__count flex items-center justify-center absolute top-0 right-0 rounded-full"
-          >
-            2
-          </div>
-        </a>
-        <div
-          class="notification-dropdown__content dropdown-box mt-8 absolute top-0 left-0 sm:left-auto sm:right-0 z-20 sm:ml-0"
-        >
-          <div class="dropdown-box__content box px-4 pt-4 pb-5">
-            <div class="text-base font-medium leading-tight mb-4">
-              Notifications
-            </div>
-            <div class="cursor-pointer relative flex items-center">
-              <div class="w-10 h-10 flex-none image-fit mr-1">
-                <img
-                  alt="Topson Messenger Tailwind HTML Admin Template"
-                  class="rounded-full"
-                  src="https://topson.left4code.com/dist/images/profile-2.jpg"
-                />
-                <div
-                  class="notification-dropdown__content__badge w-3 h-3 absolute right-0 bottom-0 rounded-full border-2"
-                ></div>
-              </div>
-              <div class="ml-2 overflow-hidden">
-                <div class="flex items-center">
-                  <a href="javascript:;" class="font-medium truncate mr-5"
-                    >Tom Cruise</a
-                  >
-                  <div
-                    class="notification-dropdown__content__time text-xs ml-auto whitespace-no-wrap"
-                  >
-                    01:10 PM
-                  </div>
-                </div>
-                <div
-                  class="notification-dropdown__content__text w-full text-xs truncate"
-                >
-                  There are many variations of passages of Lorem Ipsum
-                  available, but the majority have suffered alteration in some
-                  form, by injected humour, or randomi
-                </div>
-              </div>
-            </div>
-            <div class="cursor-pointer relative flex items-center mt-6">
-              <div class="w-10 h-10 flex-none image-fit mr-1">
-                <img
-                  alt="Topson Messenger Tailwind HTML Admin Template"
-                  class="rounded-full"
-                  src="https://topson.left4code.com/dist/images/profile-3.jpg"
-                />
-                <div
-                  class="notification-dropdown__content__badge w-3 h-3 absolute right-0 bottom-0 rounded-full border-2"
-                ></div>
-              </div>
-              <div class="ml-2 overflow-hidden">
-                <div class="flex items-center">
-                  <a href="javascript:;" class="font-medium truncate mr-5"
-                    >Keanu Reeves</a
-                  >
-                  <div
-                    class="notification-dropdown__content__time text-xs ml-auto whitespace-no-wrap"
-                  >
-                    01:10 PM
-                  </div>
-                </div>
-                <div
-                  class="notification-dropdown__content__text w-full text-xs truncate"
-                >
-                  There are many variations of passages of Lorem Ipsum
-                  available, but the majority have suffered alteration in some
-                  form, by injected humour, or randomi
-                </div>
-              </div>
-            </div>
-            <div class="cursor-pointer relative flex items-center mt-6">
-              <div class="w-10 h-10 flex-none image-fit mr-1">
-                <img
-                  alt="Topson Messenger Tailwind HTML Admin Template"
-                  class="rounded-full"
-                  src="https://topson.left4code.com/dist/images/profile-12.jpg"
-                />
-                <div
-                  class="notification-dropdown__content__badge w-3 h-3 absolute right-0 bottom-0 rounded-full border-2"
-                ></div>
-              </div>
-              <div class="ml-2 overflow-hidden">
-                <div class="flex items-center">
-                  <a href="javascript:;" class="font-medium truncate mr-5"
-                    >Tom Cruise</a
-                  >
-                  <div
-                    class="notification-dropdown__content__time text-xs ml-auto whitespace-no-wrap"
-                  >
-                    05:09 AM
-                  </div>
-                </div>
-                <div
-                  class="notification-dropdown__content__text w-full text-xs truncate"
-                >
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500
-                </div>
-              </div>
-            </div>
-            <div class="cursor-pointer relative flex items-center mt-6">
-              <div class="w-10 h-10 flex-none image-fit mr-1">
-                <img
-                  alt="Topson Messenger Tailwind HTML Admin Template"
-                  class="rounded-full"
-                  src="https://topson.left4code.com/dist/images/profile-4.jpg"
-                />
-                <div
-                  class="notification-dropdown__content__badge w-3 h-3 absolute right-0 bottom-0 rounded-full border-2"
-                ></div>
-              </div>
-              <div class="ml-2 overflow-hidden">
-                <div class="flex items-center">
-                  <a href="javascript:;" class="font-medium truncate mr-5"
-                    >Arnold Schwarzenegger</a
-                  >
-                  <div
-                    class="notification-dropdown__content__time text-xs ml-auto whitespace-no-wrap"
-                  >
-                    01:10 PM
-                  </div>
-                </div>
-                <div
-                  class="notification-dropdown__content__text w-full text-xs truncate"
-                >
-                  Contrary to popular belief, Lorem Ipsum is not simply random
-                  text. It has roots in a piece of classical Latin literature
-                  from 45 BC, making it over 20
-                </div>
-              </div>
-            </div>
-            <div class="cursor-pointer relative flex items-center mt-6">
-              <div class="w-10 h-10 flex-none image-fit mr-1">
-                <img
-                  alt="Topson Messenger Tailwind HTML Admin Template"
-                  class="rounded-full"
-                  src="https://topson.left4code.com/dist/images/profile-10.jpg"
-                />
-                <div
-                  class="notification-dropdown__content__badge w-3 h-3 absolute right-0 bottom-0 rounded-full border-2"
-                ></div>
-              </div>
-              <div class="ml-2 overflow-hidden">
-                <div class="flex items-center">
-                  <a href="javascript:;" class="font-medium truncate mr-5"
-                    >Johnny Depp</a
-                  >
-                  <div
-                    class="notification-dropdown__content__time text-xs ml-auto whitespace-no-wrap"
-                  >
-                    01:10 PM
-                  </div>
-                </div>
-                <div
-                  class="notification-dropdown__content__text w-full text-xs truncate"
-                >
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- END: Notifications -->
       <!-- BEGIN: Account -->
       <div class="account-dropdown dropdown relative">
         <a
@@ -246,7 +43,7 @@
         >
           <div class="hidden md:block ml-3">
             <div class="w-24 truncate font-medium leading-tight">
-              Tom Cruise
+              {{ user.name }}
             </div>
           </div>
         </a>
@@ -257,8 +54,8 @@
           <div class="dropdown-box__content box">
             <div class="dropdown-content__footer p-2 border-t">
               <a
-                href=""
-                class="flex items-center block p-2 transition duration-300 ease-in-out rounded-md"
+                @click="logoutFn()"
+                class="flex items-center p-2 transition duration-300 ease-in-out rounded-md"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -289,8 +86,8 @@
       class="side-menu__content -intro-x border-r w-full h-full pt-16 flex flex-col justify-center overflow-hidden"
     >
       <a
-        class="-intro-x side-menu__content__link relative side-menu__content__link--active tooltip py-5 tooltipstered"
-        href="javascript:;"
+        class="-intro-x relative tooltip py-5 tooltipstered"
+        @click="routFn('/')"
         data-side="right"
         data-content="chats"
       >
@@ -313,8 +110,8 @@
         </svg>
       </a>
       <a
-        class="-intro-x side-menu__content__link relative tooltip py-5 tooltipstered"
-        href="javascript:;"
+        class="-intro-x relative tooltip py-5 tooltipstered"
+        @click="routFn('/add-to-cart')"
         data-side="right"
         data-content="groups"
       >
@@ -339,8 +136,8 @@
         </svg>
       </a>
       <a
-        class="-intro-x side-menu__content__link relative tooltip py-5 tooltipstered"
-        href="javascript:;"
+        class="-intro-x side-menu__content__link relative tooltip py-5"
+        @click="routFn('/order')"
         data-side="right"
         data-content="contacts"
       >
@@ -369,12 +166,27 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "AuthLayout",
   data() {
     return {
-      isProfileSet: false
+      isProfileSet: false,
     };
-  }
+  },
+  computed: {
+    ...mapGetters({
+      user: "getUser"
+    }),
+  },
+  methods: {
+    routFn(el) {
+      this.$router.push(el);
+    },
+    logoutFn() {
+      localStorage.clear();
+      window.location.href = "/login";
+    },
+  },
 };
 </script>

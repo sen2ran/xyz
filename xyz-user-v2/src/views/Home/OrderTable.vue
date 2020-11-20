@@ -79,63 +79,78 @@
             >
               Total Price
             </th>
+            <th class="px-6 py-3 border-b-2 border-gray-300"></th>
           </tr>
         </thead>
         <tbody class="bg-white">
-          <tr>
+          <tr v-for="order in orders" :key="order.id">
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
               <div class="flex items-center">
                 <div>
-                  <div class="text-sm leading-5 text-gray-800">#1</div>
+                  <div class="text-sm leading-5 text-gray-800">
+                    #{{ order.id }}
+                  </div>
                 </div>
               </div>
             </td>
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
               <div class="text-sm leading-5 text-blue-900">
-                Damilare Anjorin
+                {{ order.date }}
               </div>
             </td>
             <td
               class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"
             >
-              damilareanjorin1@gmail.com
+              {{ order.count }}
             </td>
 
             <td
               class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"
             >
               <span
+                v-if="order.status == 'Delivered'"
                 class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
               >
                 <span
                   aria-hidden
                   class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
                 ></span>
-                <span class="relative text-xs">active</span>
+                <span class="relative text-xs">Delivered</span>
               </span>
               <span
+                v-if="order.status == 'Pending'"
                 class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight"
               >
                 <span
                   aria-hidden
                   class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"
                 ></span>
-                <span class="relative text-xs">disabled</span>
+                <span class="relative text-xs">Pending</span>
               </span>
               <span
+                v-if="order.status == 'New Order'"
                 class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight"
               >
                 <span
                   aria-hidden
                   class="absolute inset-0 bg-red-200 opacity-50 rounded-full"
                 ></span>
-                <span class="relative text-xs">not active</span>
+                <span class="relative text-xs">New Order</span>
               </span>
             </td>
             <td
               class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"
             >
-              +2348106420637
+              Rs. {{ order.total }}
+            </td>
+            <td
+              class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5"
+            >
+              <button
+                class="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"
+              >
+                View Details
+              </button>
             </td>
           </tr>
         </tbody>
@@ -147,5 +162,32 @@
 <script>
 export default {
   name: "OrderTable",
+  data() {
+    return {
+      orders: [
+        {
+          id: 1,
+          date: "19/11/2020",
+          count: 3,
+          status: "New Order",
+          total: 100,
+        },
+        {
+          id: 2,
+          date: "19/11/2020",
+          count: 1,
+          status: "Pending",
+          total: 100,
+        },
+        {
+          id: 3,
+          date: "19/11/2020",
+          count: 1,
+          status: "Delivered",
+          total: 100,
+        },
+      ],
+    };
+  },
 };
 </script>

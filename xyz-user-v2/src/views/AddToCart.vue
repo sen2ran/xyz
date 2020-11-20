@@ -236,7 +236,7 @@ export default {
       isHigh: false,
       isPayment: false,
       address: null,
-      searchVal: null
+      searchVal: null,
     };
   },
   mounted() {
@@ -250,7 +250,7 @@ export default {
       if (this.searchVal) {
         return this.allItems.filter(({ name }) => {
           let tmpName = name.toLowerCase();
-          return tmpName.includes(this.searchVal);
+          return tmpName.includes(this.searchVal.toLowerCase());
         });
       } else {
         return this.allItems;

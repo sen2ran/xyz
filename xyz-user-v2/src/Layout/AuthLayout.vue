@@ -135,30 +135,6 @@
           ></path>
         </svg>
       </a>
-      <a
-        class="-intro-x side-menu__content__link relative tooltip py-5"
-        @click="routFn('/order')"
-        data-side="right"
-        data-content="contacts"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-users w-5 h-5 mx-auto"
-        >
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-        </svg>
-      </a>
     </div>
   </div>
   <!-- END: Top Bar -->
@@ -171,13 +147,13 @@ export default {
   name: "AuthLayout",
   data() {
     return {
-      isProfileSet: false
+      isProfileSet: false,
     };
   },
   computed: {
     ...mapGetters({
-      user: "getUser"
-    })
+      user: "getUser",
+    }),
   },
   methods: {
     routFn(el) {
@@ -186,7 +162,7 @@ export default {
     logoutFn() {
       localStorage.clear();
       window.location.href = "/login";
-    }
-  }
+    },
+  },
 };
 </script>

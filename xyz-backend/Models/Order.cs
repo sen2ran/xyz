@@ -17,5 +17,7 @@ namespace xyz_backend.Models
         public int total { get; set; }
         public string status { get; set; } = "Neworder";
         public List<AddToCard> addToCard { get; set; }
+        public DateTime deliveredDate { get; set; }
+        public DateTime requestedDate { get; set; } = DateTime.Now;
     }
 }

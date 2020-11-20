@@ -7,7 +7,7 @@
     >
       <span class="pi pi-bars"></span>
     </button>
-    <h3 v-if="!this.$route.meta.isSidebar">ABC</h3>
+    <h3 v-if="!this.$route.meta.isSidebar">XYZ</h3>
   </div>
 </template>
 

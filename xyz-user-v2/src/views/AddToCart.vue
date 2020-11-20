@@ -8,7 +8,7 @@
           class="chat-box col-span-12 xl:col-span-8 flex flex-col overflow-hidden xl:border-l xl:border-r p-6"
         >
           <div class="intro-y text-xl font-medium pb-2">
-            Select Item for Laundry 2 {{ searchVal }}
+            Select Item for Laundry
           </div>
           <div class="intro-y chat-input border flex items-center px-5 py-4">
             <textarea
@@ -227,7 +227,7 @@ export default {
   components: {
     SingleDress,
     SingleAddToCard,
-    AuthLayout
+    AuthLayout,
   },
   data() {
     return {
@@ -244,13 +244,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: "getUser"
+      user: "getUser",
     }),
     filteredList() {
-      console.log(this.searchVal);
       if (this.searchVal) {
-        return this.allItems.filter(item => {
-          return this.searchVal.indexOf(item.name) > -1;
+        return this.allItems.filter(({ name }) => {
+          let tmpName = name.toLowerCase();
+          return tmpName.includes(this.searchVal);
         });
       } else {
         return this.allItems;
@@ -266,9 +266,9 @@ export default {
 
       return {
         subtotal: price,
-        total: total
+        total: total,
       };
-    }
+    },
   },
   methods: {
     async initFn() {
@@ -278,7 +278,7 @@ export default {
           return {
             ...x,
             count: 0,
-            index: index
+            index: index,
           };
         });
       } catch (error) {
@@ -301,7 +301,7 @@ export default {
       if (this.addToCard.length > 0) {
         let addToCard = JSON.parse(JSON.stringify(this.addToCard));
         let index = addToCard.findIndex(
-          x => x.id == this.allItems[item.index].id
+          (x) => x.id == this.allItems[item.index].id
         );
         if (index >= 0) {
           addToCard[index].count = isPlus
@@ -310,20 +310,20 @@ export default {
         } else {
           addToCard.push({
             ...item,
-            count: 1
+            count: 1,
           });
         }
         this.addToCard = addToCard;
       } else {
         this.addToCard.push({
           ...item,
-          count: 1
+          count: 1,
         });
       }
     },
     deleteFn(e) {
-      let addToCardIndex = this.addToCard.findIndex(x => x.id == e.id);
-      let allItemsIndex = this.allItems.findIndex(x => x.id == e.id);
+      let addToCardIndex = this.addToCard.findIndex((x) => x.id == e.id);
+      let allItemsIndex = this.allItems.findIndex((x) => x.id == e.id);
 
       this.addToCard.splice(addToCardIndex, 1);
       this.allItems[allItemsIndex].count = 0;
@@ -336,7 +336,7 @@ export default {
     async paymentFn() {
       let payload = {
         userId: this.user.id,
-        addToCard: this.addToCard.map(x => {
+        addToCard: this.addToCard.map((x) => {
           let tmpX = { ...x };
           tmpX.dressId = x.id;
           delete x["id"];
@@ -345,7 +345,7 @@ export default {
         isHigh: this.isHigh,
         address: this.address,
         subtotal: this.computedPrice.subtotal,
-        total: this.computedPrice.total
+        total: this.computedPrice.total,
       };
       try {
         let { data } = await MakeOrder(payload);
@@ -358,7 +358,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>

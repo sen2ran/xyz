@@ -6,6 +6,7 @@
     <div
       class="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white shadow-lg px-12"
     >
+      <div class="intro-y text-xl font-medium pb-2">Dashboard</div>
       <div class="flex justify-between">
         <div
           class="inline-flex border rounded w-7/12 px-2 lg:px-6 h-12 bg-transparent"

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using xyz_backend.Services;
 using xyz_backend.Models;
+using xyz_backend.Models.ViewModels;
 
 namespace xyz_backend.Controllers
 {
@@ -29,5 +30,12 @@ namespace xyz_backend.Controllers
         {
             return Ok(_orderService.getAllUserById(id).Result);
         }
+        [HttpPost("change")]
+        public IActionResult changeStatus(ChangeStatus changeStatus)
+        {
+            return Ok(_orderService.changeStatusFn(changeStatus).Result);
+        }
+
+
     }
 }

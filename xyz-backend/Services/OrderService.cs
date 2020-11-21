@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using xyz_backend.Models;
 using MongoDB.Driver;
+using xyz_backend.Models.ViewModels;
 
 namespace xyz_backend.Services
 {
@@ -42,6 +43,21 @@ namespace xyz_backend.Services
             serviceResponse.Message = "Get All Order By User";
             return serviceResponse;
         }
+
+
+        public async Task<ServiceResponse<object>> changeStatusFn(ChangeStatus changeStatus)
+        {
+            ServiceResponse<object> serviceResponse = new ServiceResponse<object>();
+
+            var documents = await _orders.Find<Order>(order => order.id == changeStatus.id).FirstOrDefaultAsync();
+            documents.status = changeStatus.status;
+            await _orders.ReplaceOneAsync(order => order.id == changeStatus.id, documents);
+            serviceResponse.Data = documents;
+            serviceResponse.Success = true;
+            serviceResponse.Message = " Updated Successfully";
+            return serviceResponse;
+        }
+
     }
 
     public interface IOrder
@@ -49,6 +65,7 @@ namespace xyz_backend.Services
         Task<ServiceResponse<Order>> makeOrder(Order dressType);
         Task<ServiceResponse<object>> getAll();
         Task<ServiceResponse<object>> getAllUserById(string id);
+        Task<ServiceResponse<object>> changeStatusFn(ChangeStatus changeStatus);
     }
 }
 

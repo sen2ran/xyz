@@ -112,7 +112,7 @@
               class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"
             >
               <span
-                v-if="order.status == 'Delivered'"
+                v-if="order.status == 'Compeleted'"
                 class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
               >
                 <span

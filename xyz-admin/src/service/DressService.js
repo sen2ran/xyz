@@ -32,6 +32,14 @@ export const GetAllOrders = async (payload) => {
   }
 };
 
+export const ChangeStatus = async (payload) => {
+  try {
+    return await Instance.instance.post(`/order/change`, payload);
+  } catch (error) {
+    return error;
+  }
+};
+
 // export const DeleteUser = async (payload) => {
 //   try {
 //     return await Instance.instance.delete(`/user/${payload}`);

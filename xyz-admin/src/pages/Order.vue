@@ -79,13 +79,24 @@
             </template></Column
           >
           <Column header="Status" sortable>
-            <template #body="slotProps">
+            <!-- <template #body="slotProps">
               <Button
                 icon="pi pi-window-maximize"
                 class="p-button-rounded p-button-success p-mr-2"
                 @click="unitFn(slotProps.data)"
-              />
+              /> -->
+            <template #body="slotProps">
+              <span
+                @click="statusChange(slotProps.data)"
+                v-if="slotProps.data.status != 'Compeleted'"
+                class="product-badge status-outofstock"
+                >{{ slotProps.data.status }}</span
+              >
+              <span v-else class="product-badge status-instock"
+                >Compeleted</span
+              >
             </template>
+            <!-- </template> -->
           </Column>
         </DataTable>
       </div>
@@ -94,7 +105,7 @@
 </template>
 
 <script>
-import { GetAllOrders } from "../service/DressService";
+import { GetAllOrders, ChangeStatus } from "../service/DressService";
 
 export default {
   components: {},
@@ -136,6 +147,18 @@ export default {
           detail: error,
           life: 3000,
         });
+      }
+    },
+    async statusChange(data1) {
+      if (data1.staus != "Compeleted") {
+        let payload = {
+          id: data1.id,
+          status: data1.status == "Neworder" ? "Pending" : "Compeleted",
+        };
+        let { data } = await ChangeStatus(payload);
+        if (data.success) {
+          this.initFn();
+        }
       }
     },
     createId() {

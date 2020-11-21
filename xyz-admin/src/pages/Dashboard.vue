@@ -120,7 +120,7 @@
 
 <script>
 import { GetAllOrders } from "../service/DressService";
-
+import { Login } from "../service/LoginService";
 
 export default {
   data() {
@@ -175,21 +175,34 @@ export default {
       }
     },
     downloadReport() {
-      let exportObj = this.allOrder.map((x) => {
+      // this.allOrder
+      let tmpArray = [];
+
+      for (let i = 0; i < this.allOrder.length; i++) {
+        // console.log(this.allOrder[i].addToCard);
+        tmpArray.push(...this.allOrder[i].addToCard);
+      }
+
+      console.log(tmpArray);
+
+      let countArray = tmpArray.reduce(function (acc, val) {
+        var o = acc
+          .filter(function (obj) {
+            return obj.name == val.name;
+          })
+          .pop() || { name: val.name, count: 0 };
+
+        o.count += val.count;
+        acc.push(o);
+        return acc;
+      }, []);
+
+      let removedDuplicate = [...new Set([...countArray])];
+
+      let exportObj = removedDuplicate.map((x) => {
         return {
-          OrderID: x.orderID.id,
-          Date: x.orderID.date,
-          StoreName: x.vendorDetails.storeName,
-          StoreLocation: x.vendorDetails.businessName.replace(/,/g, ""),
-          StorePhone: x.vendorDetails.phone,
-          CutomerName: x.customerDetails.fullName,
-          CustomerPhone: x.customerDetails.contactInfo,
-          DeliveryLocation: x.deliveryDetails.deliveryAddress.replace(/,/g, ""),
-          DeliveryCharge: x.deliveryDetails.deliverCharge,
-          OrderItems: x.orderDetails.items.length,
-          OrderTotal: x.paymentDetails.total,
-          OrderStatus: x.orderStatus,
-          PaymentType: x.paymentDetails.paymentMethod,
+          Name: x.id,
+          Count: x.orderID.date,
         };
       });
       var headers = {

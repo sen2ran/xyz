@@ -95,13 +95,17 @@
             </td>
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
               <div class="text-sm leading-5 text-blue-900">
-                {{ order.date }}
+                {{
+                  order.deliveredDate == "0001-01-01T00:00:00Z"
+                    ? "-"
+                    : order.deliveredDate
+                }}
               </div>
             </td>
             <td
               class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"
             >
-              {{ order.count }}
+              {{ order.addToCard.length }}
             </td>
 
             <td
@@ -128,7 +132,7 @@
                 <span class="relative text-xs">Pending</span>
               </span>
               <span
-                v-if="order.status == 'New Order'"
+                v-if="order.status == 'Neworder'"
                 class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight"
               >
                 <span
@@ -162,32 +166,6 @@
 <script>
 export default {
   name: "OrderTable",
-  data() {
-    return {
-      orders: [
-        {
-          id: 1,
-          date: "19/11/2020",
-          count: 3,
-          status: "New Order",
-          total: 100,
-        },
-        {
-          id: 2,
-          date: "19/11/2020",
-          count: 1,
-          status: "Pending",
-          total: 100,
-        },
-        {
-          id: 3,
-          date: "19/11/2020",
-          count: 1,
-          status: "Delivered",
-          total: 100,
-        },
-      ],
-    };
-  },
+  props: ["orders"],
 };
 </script>

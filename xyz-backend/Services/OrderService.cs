@@ -23,11 +23,32 @@ namespace xyz_backend.Services
             serviceResponse.Message = "New Order Created Successfully";
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<object>> getAll()
+        {
+            ServiceResponse<object> serviceResponse = new ServiceResponse<object>();
+            var documents = await _orders.Find(_ => true).ToListAsync();
+            serviceResponse.Data = documents;
+            serviceResponse.Success = true;
+            serviceResponse.Message = "All Orders";
+            return serviceResponse;
+        }
+        public async Task<ServiceResponse<object>> getAllUserById(string id)
+        {
+            ServiceResponse<object> serviceResponse = new ServiceResponse<object>();
+            var orders = await _orders.Find(x => x.userId == id).ToListAsync();
+            serviceResponse.Data = orders;
+            serviceResponse.Success = true;
+            serviceResponse.Message = "Get All Order By User";
+            return serviceResponse;
+        }
     }
 
     public interface IOrder
     {
         Task<ServiceResponse<Order>> makeOrder(Order dressType);
+        Task<ServiceResponse<object>> getAll();
+        Task<ServiceResponse<object>> getAllUserById(string id);
     }
 }
 

@@ -15,3 +15,11 @@ export const MakeOrder = async payload => {
     return error;
   }
 };
+
+export const getAllOrderByUser = async payload => {
+  try {
+    return await Instance.instance.get(`/order/single/${payload.id}`);
+  } catch (error) {
+    return error;
+  }
+};

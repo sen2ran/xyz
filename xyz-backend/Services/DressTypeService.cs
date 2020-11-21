@@ -24,7 +24,7 @@ namespace xyz_backend.Services
             await _dressType.InsertOneAsync(dressType);
             serviceResponse.Data = dressType;
             serviceResponse.Success = true;
-            serviceResponse.Message = "New User Created Successfully";
+            serviceResponse.Message = "New Dress Created Successfully";
             return serviceResponse;
         }
 

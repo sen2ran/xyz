@@ -7,32 +7,32 @@
         </div>
         <div class="highlight-details">
           <i class="pi pi-check"></i>
-          <span>No. of Tenat</span>
-          <span class="count">20</span>
+          <span>Total Order </span>
+          <span class="count">{{ count }}</span>
         </div>
       </div>
     </div>
     <div class="p-col-12 p-md-6 p-xl-4">
       <div class="highlight-box">
         <div class="initials" style="background-color: #ef6262; color: #a83d3b">
-          <span>A</span>
+          <span>P</span>
         </div>
         <div class="highlight-details">
           <i class="pi pi-check"></i>
-          <span>No. of Apartment</span>
-          <span class="count">4</span>
+          <span>Pending Order</span>
+          <span class="count">{{ pending }}</span>
         </div>
       </div>
     </div>
     <div class="p-col-12 p-md-6 p-xl-4">
       <div class="highlight-box">
         <div class="initials" style="background-color: #20d077; color: #038d4a">
-          <span>O</span>
+          <span>2</span>
         </div>
         <div class="highlight-details">
           <i class="pi pi-check"></i>
-          <span>No. of owner</span>
-          <span class="count">7</span>
+          <span>Compeleted</span>
+          <span class="count">{{ completed }}</span>
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
         <div class="activity-header">
           <div class="p-grid">
             <div class="p-col-12" style="text-align: right">
-              <Button label="View Report" />
+              <Button @click="downloadReport()" label="Download  dress count" />
             </div>
           </div>
         </div>
@@ -51,17 +51,17 @@
             <ul class="activity-list">
               <li>
                 <div class="p-d-flex p-jc-between p-ai-center p-mb-3 p-link">
-                  <h5 class="activity p-m-0">Assign Security</h5>
-                  <div class="count" style="background-color:#f9c851">
-                    <i class="pi pi-key" style="fontSize: 2rem"></i>
+                  <h5 class="activity p-m-0">Orders</h5>
+                  <div class="count" style="background-color: #f9c851">
+                    <i class="pi pi-money-bill" style="fontsize: 2rem"></i>
                   </div>
                 </div>
               </li>
               <li>
                 <div class="p-d-flex p-jc-between p-ai-center p-mb-3 p-link">
-                  <h5 class="activity p-m-0">Assign Tenant</h5>
-                  <div class="count" style="background-color:#007be5">
-                    <i class="pi pi-user-plus" style="fontSize: 2rem"></i>
+                  <h5 class="activity p-m-0">Dress Type</h5>
+                  <div class="count" style="background-color: #007be5">
+                    <i class="pi pi-globe" style="fontsize: 2rem"></i>
                   </div>
                 </div>
               </li>
@@ -71,17 +71,17 @@
             <ul class="activity-list">
               <li>
                 <div class="p-d-flex p-jc-between p-ai-center p-mb-3 p-link">
-                  <h5 class="activity p-m-0">Make Payment</h5>
-                  <div class="count" style="background-color:#20d077">
-                    <i class="pi pi-id-card" style="fontSize: 2rem"></i>
+                  <h5 class="activity p-m-0">User</h5>
+                  <div class="count" style="background-color: #20d077">
+                    <i class="pi pi-user-plus" style="fontsize: 2rem"></i>
                   </div>
                 </div>
               </li>
               <li>
                 <div class="p-d-flex p-jc-between p-ai-center p-mb-3">
-                  <h5 class="activity p-m-0">Add Apartment</h5>
-                  <div class="count" style="background-color:#ef6262">
-                    <i class="pi pi-id-card" style="fontSize: 2rem"></i>
+                  <h5 class="activity p-m-0">Admin</h5>
+                  <div class="count" style="background-color: #ef6262">
+                    <i class="pi pi-users" style="fontsize: 2rem"></i>
                   </div>
                 </div>
               </li>
@@ -95,7 +95,7 @@
         <div class="activity-header">
           <div class="p-grid">
             <div class="p-col-12" style="text-align: right">
-              <Button label="Refresh" icon="pi pi-refresh" />
+              <Button label="Refresh" icon="pi pi-refresh" @click="initFn()" />
             </div>
           </div>
         </div>
@@ -103,13 +103,13 @@
           <li>
             <div class="p-d-flex p-jc-between p-ai-center p-mb-3">
               <h5 class="activity p-m-0">Income</h5>
-              <div class="count">LKR 19034</div>
+              <div class="count">LKR {{ price[0].total }}</div>
             </div>
           </li>
           <li>
             <div class="p-d-flex p-jc-between p-ai-center p-mb-3">
               <h5 class="activity p-m-0">Profit</h5>
-              <div class="count">LKR 1903</div>
+              <div class="count">LKR {{ price[0].total * 0.1 }}</div>
             </div>
           </li>
         </ul>
@@ -119,80 +119,86 @@
 </template>
 
 <script>
-
+import { GetAllOrders } from "../service/DressService";
+import { Login } from "../service/LoginService";
 
 export default {
   data() {
     return {
-      tasksCheckbox: [],
-      dropdownCities: [
-        { name: "New York", code: "NY" },
-        { name: "Rome", code: "RM" },
-        { name: "London", code: "LDN" },
-        { name: "Istanbul", code: "IST" },
-        { name: "Paris", code: "PRS" },
+      allOrder: [],
+      count: 0,
+      pending: 0,
+      completed: 0,
+      price: [
+        {
+          total: 0,
+        },
       ],
-      dropdownCity: null,
-      events: null,
-      products: null,
-      selectedProducts: null,
-      lineData: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
-        datasets: [
-          {
-            label: "Maintance",
-            data: [65, 59, 80, 81, 56, 55, 40],
-            fill: false,
-            backgroundColor: "#2f4860",
-            borderColor: "#2f4860",
-          },
-          {
-            label: "Rent",
-            data: [28, 48, 40, 19, 86, 27, 90],
-            fill: false,
-            backgroundColor: "#00bb7e",
-            borderColor: "#00bb7e",
-          },
-        ],
-      },
     };
   },
   productService: null,
   eventService: null,
 
   mounted() {
-    this.productService
-      .getProductsSmall()
-      .then((data) => (this.products = data));
-    this.eventService.getEvents().then((data) => (this.events = data));
-
-    let afId = this.$route.query["af_id"];
-    if (afId) {
-      let today = new Date();
-      let expire = new Date();
-      expire.setTime(today.getTime() + 3600000 * 24 * 7);
-      document.cookie =
-        "primeaffiliateid=" +
-        afId +
-        ";expires=" +
-        expire.toUTCString() +
-        ";path=/; domain:primefaces.org";
-    }
+    this.initFn();
   },
   methods: {
-    formatCurrency(value) {
-      return value.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-      });
+    async initFn() {
+      try {
+        let { data } = await GetAllOrders();
+        console.log(data);
+        this.allOrder = data.data;
+        this.count = data.data.length;
+        this.completed = data.data.filter(
+          (x) => x.status == "Completed"
+        ).length;
+        this.pending = data.data.length - this.completed;
+
+        this.price = data.data.reduce(function (acc, val) {
+          var o = acc
+            .filter(function (obj) {
+              return obj.name == val.name;
+            })
+            .pop() || { name: val.name, total: 0 };
+
+          o.total += val.total;
+          acc.push(o);
+          return acc;
+        }, []);
+      } catch (error) {
+        this.$toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: error,
+          life: 3000,
+        });
+      }
+    },
+    downloadReport() {
+      // this.allOrder
+      let tmpArray = [];
+
+      for (let i = 0; i < this.allOrder.length; i++) {
+        // console.log(this.allOrder[i].addToCard);
+        tmpArray.push(...this.allOrder[i].addToCard);
+      }
+
+      console.log(tmpArray);
+
+      let countArray = tmpArray.reduce(function (acc, val) {
+        var o = acc
+          .filter(function (obj) {
+            return obj.name == val.name;
+          })
+          .pop() || { name: val.name, count: 0 };
+
+        o.count += val.count;
+        acc.push(o);
+        return acc;
+      }, []);
+
+      let removedDuplicate = [...new Set([...countArray])];
+      console.log(removedDuplicate);
     },
   },
 };

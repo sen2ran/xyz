@@ -1,8 +1,19 @@
 <template>
   <div class="p-grid crud-demo">
     <div class="p-col-12">
+      <Toolbar class="p-mb-4">
+        <template slot="right">
+          <Button
+            label="Export"
+            icon="pi pi-upload"
+            class="p-button-help"
+            @click="exportCSV($event)"
+          />
+        </template>
+      </Toolbar>
       <div class="card">
         <Toast />
+
         <DataTable
           ref="dt"
           :value="admins"
@@ -32,11 +43,18 @@
           <Column field="email" header="Email" sortable></Column>
           <Column header="Approval">
             <template #body="slotProps">
-              <Button
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-success p-mr-2"
+              <span
+                v-if="slotProps.data.isApproved"
+                class="product-badge status-instock"
                 @click="ApprovalUser(slotProps.data)"
-              />
+                >Approved</span
+              >
+              <span
+                v-if="!slotProps.data.isApproved"
+                class="product-badge status-outofstock"
+                @click="ApprovalUser(slotProps.data)"
+                >Not Approved</span
+              >
             </template>
           </Column>
           <Column header="Actions">
@@ -221,6 +239,11 @@ export default {
         let { data } = await GetAll();
         console.log(data);
         this.admins = data.data;
+
+        // this.admins.push({
+        //   name: "Adnan",
+        //   email: "adnan@gmail.com",
+        // });
       } catch (error) {
         this.$toast.add({
           severity: "error",
@@ -229,6 +252,9 @@ export default {
           life: 3000,
         });
       }
+    },
+    exportCSV() {
+      this.$refs.dt.exportCSV();
     },
     openNew() {
       this.submitted = false;
@@ -293,7 +319,6 @@ export default {
       }
     },
     async ApprovalUser(el) {
-      console.log(el);
       // Approval
       let padyload = {
         id: el._id,
@@ -302,6 +327,7 @@ export default {
       try {
         let { data } = await Approval(padyload);
         console.log(data);
+        this.initFn();
       } catch (error) {
         console.log(error);
       }
@@ -309,7 +335,6 @@ export default {
     confirmDelete(data) {
       this.deleteDialog = true;
       let tmp = JSON.parse(JSON.stringify(data));
-      console.log(tmp);
       this.admin = tmp;
       this.submitted = false;
     },

@@ -5,7 +5,12 @@
         <Toast />
         <Toolbar class="p-mb-4">
           <template slot="left">
-            <Button label="New" icon="pi pi-plus" class="p-button-success p-mr-2" @click="openNew" />
+            <Button
+              label="New"
+              icon="pi pi-plus"
+              class="p-button-success p-mr-2"
+              @click="openNew"
+            />
           </template>
 
           <template slot="right">
@@ -20,14 +25,14 @@
 
         <DataTable
           ref="dt"
-          :value="apartments"
-          :selection.sync="selectedApartments"
+          :value="orders"
+          :selection.sync="selectedOrders"
           data-key="id"
           :paginator="true"
           :rows="10"
           :filters="filters"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          :rowsPerPageOptions="[5,10,25]"
+          :rowsPerPageOptions="[5, 10, 25]"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
         >
           <template #header>
@@ -35,183 +40,73 @@
               <h5 class="p-m-0">Manage Products</h5>
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
-                <InputText v-model="filters['global']" placeholder="Search..." />
+                <InputText
+                  v-model="filters['global']"
+                  placeholder="Search..."
+                />
               </span>
             </div>
           </template>
 
-          <Column field="apartmentId" header="ID" sortable></Column>
-          <Column field="apartmentName" header="Name" sortable></Column>
-          <!-- <Column header="Image">
+          <Column field="id" header="ID" sortable></Column>
+          <Column field="isHigh" header="Priority" sortable>
             <template #body="slotProps">
-              <img
-                :src="'assets/layout/images/product/' + slotProps.data.image"
-                :alt="slotProps.data.image"
-                class="product-image"
-              />
-            </template>
-          </Column>-->
-
+              <span
+                v-if="slotProps.data.isHigh"
+                class="product-badge status-instock"
+                >High</span
+              >
+              <span
+                v-if="!slotProps.data.isHigh"
+                class="product-badge status-outofstock"
+                >Normal</span
+              >
+            </template></Column
+          >
           <Column field="address" header="Address" sortable></Column>
-          <Column field="maintenancePerUnitDefaultPrice" header="Maintenance" sortable></Column>
-          <Column field="noOfUnit" header="Total Units" sortable></Column>
-          <Column>
+          <Column
+            field="maintenancePerUnitDefaultPrice"
+            header="Item Count"
+            sortable
+          >
+            <template #body="slotProps">
+              {{ slotProps.data.addToCard.length }}
+            </template>
+          </Column>
+          <Column field="total" header="Total" sortable>
+            <template #body="slotProps">
+              Rs. {{ slotProps.data.total }}
+            </template></Column
+          >
+          <Column header="Status" sortable>
             <template #body="slotProps">
               <Button
                 icon="pi pi-window-maximize"
                 class="p-button-rounded p-button-success p-mr-2"
                 @click="unitFn(slotProps.data)"
               />
-              <Button
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-success p-mr-2"
-                @click="editProduct(slotProps.data)"
-              />
-              <Button
-                icon="pi pi-trash"
-                class="p-button-rounded p-button-warning"
-                @click="confirmDeleteProduct(slotProps.data)"
-              />
             </template>
           </Column>
         </DataTable>
-
-        <Dialog
-          :visible.sync="isDialog"
-          :style="{width: '700px' , height: '800px'}"
-          header="Apartment Details"
-          :modal="true"
-          class="p-fluid"
-        >
-          <div class="p-field">
-            <label for="name">Apartment Name</label>
-            <InputText
-              id="name"
-              v-model.trim="apartment.apartmentName"
-              required="true"
-              autofocus
-              :class="{'p-invalid': submitted && !apartment.apartmentName}"
-            />
-            <small class="p-invalid" v-if="submitted && !apartment.apartmentName">Name is required.</small>
-          </div>
-          <div class="p-formgrid p-grid">
-            <div class="p-field p-col-4">
-              <label for="name">City Name</label>
-              <Dropdown
-                v-model="apartment.cityName"
-                :options="computedCities"
-                optionLabel="name"
-                placeholder="Select a city"
-              />
-              <small class="p-invalid" v-if="submitted && !admin.role">Role is required.</small>
-            </div>
-            <div class="p-field p-col-8">
-              <label for="name">Address</label>
-              <InputText
-                id="store-address-main-input"
-                v-model.trim="apartment.address"
-                required="true"
-                placeholder="Street &amp; City"
-                aria-label="Street &amp; City"
-                ref="autocomplete"
-                type="text"
-                :class="{'p-invalid': submitted && !apartment.address}"
-              />
-              <small class="p-invalid" v-if="submitted && !apartment.address">Name is required.</small>
-            </div>
-          </div>
-
-          <GoogleLocation />
-
-          <div class="p-formgrid p-grid">
-            <div class="p-field p-col">
-              <label for="price">No Of Unit</label>
-              <InputNumber id="price" v-model="apartment.noOfUnit" integeronly />
-            </div>
-            <div class="p-field p-col">
-              <label for="quantity">Maintenance Per Unit</label>
-              <InputNumber
-                id="maintenancePerUnitDefaultPrice"
-                v-model="apartment.maintenancePerUnitDefaultPrice"
-              />
-            </div>
-          </div>
-
-          <template #footer>
-            <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveApartment" />
-          </template>
-        </Dialog>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import GoogleLocation from "../components/GoogleLocation";
-import { AddApartment, GetAll } from "../service/ApartmentService";
+import { GetAllOrders } from "../service/DressService";
 
 export default {
-  components: {
-    GoogleLocation,
-  },
+  components: {},
   data() {
     return {
-      apartment: {
-        apartmentId: null,
-        apartmentName: null,
-        imageUrl: `https://robohash.org/${Number(new Date())}?set=set3`,
-        noOfUnit: null,
-        address: null,
-        cityName: null,
-        maintenancePerUnitDefaultPrice: null,
-        latAndLon: [null, null],
-      },
-
-      street_number: null, //Street
-      sublocality_level_1: null, //Sub Locality
-      locality: null, //City
-      administrative_area_level_2: null, //District
-      administrative_area_level_1: null, //State Province
-      postal_code: null, //Zip code
-      country: null, //Country
-
-      autocomplete: null,
-      isUnit: false,
-      cities: [
-        "Kandy",
-        "Matale",
-        "Nuwara Eliya",
-        "Ampara",
-        "Batticaloa",
-        "Trincomalee",
-        "Anuradhapura",
-        "Polonnaruwa",
-        "Jaffna",
-        "Kilinochchi",
-        "Mannar",
-        "Mulativu",
-        "Vavuniya",
-        "Kurunegala",
-        "Chilaw",
-        "Kegalle",
-        "Ratnapura",
-        "Galle",
-        "Hambantota",
-        "Matara",
-        "Badulla",
-        "Monaragala",
-        "Colombo",
-        "Gampaha",
-        "Kalutara",
-      ],
       isEdit: false,
       submitted: false,
-      apartments: [],
+      orders: [],
       isDialog: false,
       deleteIsDialog: false,
       deleteDialog: false,
-      selectedApartments: null,
+      selectedOrders: null,
       filters: {},
     };
   },
@@ -231,9 +126,9 @@ export default {
   methods: {
     async initFn() {
       try {
-        let { data } = await GetAll();
+        let { data } = await GetAllOrders();
         console.log(data);
-        this.apartments = data.data;
+        this.orders = data.data;
       } catch (error) {
         this.$toast.add({
           severity: "error",
@@ -277,69 +172,8 @@ export default {
       this.submitted = false;
       this.isEdit = false;
     },
-    async saveApartment() {
-      let payload = {
-        apartmentId: this.createId(),
-        apartmentName: this.apartment.apartmentName,
-        noOfUnit: this.apartment.noOfUnit,
-        address: this.apartment.address,
-        cityName: this.apartment.cityName.name,
-        maintenancePerUnitDefaultPrice: this.apartment
-          .maintenancePerUnitDefaultPrice,
-        latAndLon: this.apartment.latAndLon,
-      };
-      console.log(payload);
-      console.log(payload.latAndLon.length);
-      console.log(payload.noOfUnit);
-      console.log(this.apartment.cityName);
-      // if (!this.isEdit) {
-      if (
-        payload.apartmentName &&
-        payload.latAndLon.length > 0 &&
-        payload.maintenancePerUnitDefaultPrice &&
-        payload.noOfUnit > 0 &&
-        payload.address &&
-        payload.cityName
-      ) {
-        console.log(1);
-
-        if (!this.isEdit) {
-          try {
-            console.log(2);
-
-            let { data } = await AddApartment(payload);
-            if (data.success) {
-              this.$toast.add({
-                severity: "success",
-                summary: "Successful",
-                detail: "Apartment Created",
-                life: 5000,
-              });
-              this.isDialog = false;
-              this.isEdit = false;
-              this.apartment = {
-                apartmentId: this.createId(),
-                apartmentName: null,
-                imageUrl: `https://robohash.org/${Number(new Date())}?set=set3`,
-                noOfUnit: null,
-                address: null,
-                cityName: null,
-                maintenancePerUnitDefaultPrice: null,
-                latAndLon: [1234, 1244],
-              };
-              await this.initFn();
-            }
-          } catch (error) {
-            this.$toast.add({
-              severity: "error",
-              summary: "Error",
-              detail: error,
-              life: 3000,
-            });
-          }
-        }
-      }
-      // }
+    exportCSV() {
+      this.$refs.dt.exportCSV();
     },
     unitFn(data) {
       this.$router.push(`/apartment/${data.id}`);

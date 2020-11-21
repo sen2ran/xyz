@@ -14,25 +14,38 @@
           <input
             type="text"
             class="intro-y auth__input input input--lg w-full border block"
+            v-model="name"
             placeholder="Fulll Name"
           />
+          <div class="pb-2 text-center">
+            <span class="text-sm text-red-700">{{ nameError }}</span>
+          </div>
           <input
             type="text"
             class="intro-y auth__input input input--lg w-full border block mt-4"
+            v-model="email"
             placeholder="Email"
           />
+          <div class="pb-2 text-center">
+            <span class="text-sm text-red-700">{{ emailError }}</span>
+          </div>
           <input
             type="password"
+            v-model="password"
             class="intro-y auth__input input input--lg w-full border block mt-4"
             placeholder="Password"
           />
+          <div class="pb-2 text-center">
+            <span class="text-sm text-red-700">{{ passwordError }}</span>
+          </div>
         </div>
 
         <div class="intro-y mt-5 xl:mt-8 text-center xl:text-left">
           <button
             class="intro-y button button--lg button--primary w-full xl:mr-3"
+            @click="regFn"
           >
-            Register
+            {{ regString }}
           </button>
           <button
             class="intro-y button button--lg button--secondary w-full border mt-3"
@@ -42,23 +55,60 @@
           </button>
         </div>
       </div>
-      <div class="intro-y auth__info mt-10 text-center xl:text-center">
-        By signin up, you agree to our
-        <br />
-        <a class="underline" href="">Terms and Conditions</a> &amp;
-        <a class="underline" href="">Privacy Policy</a>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { Registration } from "../service/LoginService";
+
 export default {
   name: "SignUp",
+  data() {
+    return {
+      name: null,
+      nameError: null,
+      email: null,
+      emailError: null,
+      password: null,
+      passwordError: null,
+      regString: "Registration",
+      isShowPassword: false,
+      loginError: null,
+    };
+  },
   methods: {
+    async regFn() {
+      this.regString = "Loading...";
+      let payload = {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+      };
+      try {
+        let { data } = await Registration(payload);
+        if (data.success) {
+          localStorage.setItem("user", JSON.stringify(data.data));
+          this.$store.dispatch("user/setUser", data.data);
+          this.regString = "Registration";
+          this.$router.push("/login");
+        } else {
+          this.loginError = data.message;
+          setTimeout(() => {
+            this.loginError = "";
+            this.regString = "Registration";
+          }, 2000);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    showPassFn() {
+      this.isShowPassword = !this.isShowPassword;
+    },
     routeFn() {
       this.$router.push("/login");
-    }
-  }
+    },
+  },
 };
 </script>

@@ -24,13 +24,13 @@ export const GetAll = async (payload) => {
   }
 };
 
-// export const GetOwnerByName = async (payload) => {
-//   try {
-//     return await Instance.instance.get(`/owner/list/${payload}`);
-//   } catch (error) {
-//     return error;
-//   }
-// };
+export const GetAllOrders = async (payload) => {
+  try {
+    return await Instance.instance.get(`/order/all`, payload);
+  } catch (error) {
+    return error;
+  }
+};
 
 // export const DeleteUser = async (payload) => {
 //   try {

@@ -14,11 +14,20 @@ namespace xyz_backend.Controllers
         {
             _orderService = orderService;
         }
-
         [HttpPost]
         public IActionResult makeOrder(Order order)
         {
             return Ok(_orderService.makeOrder(order).Result);
+        }
+        [HttpGet("all")]
+        public IActionResult getAll()
+        {
+            return Ok(_orderService.getAll().Result);
+        }
+        [HttpGet("single/{id:length(24)}")]
+        public IActionResult getAllUserById(string id)
+        {
+            return Ok(_orderService.getAllUserById(id).Result);
         }
     }
 }

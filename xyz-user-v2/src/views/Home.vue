@@ -54,7 +54,7 @@ export default {
 
         this.count.count = data.data.length;
         this.count.completed = data.data.filter(
-          (x) => x.status == "Completed"
+          (x) => x.status == "Compeleted"
         ).length;
         this.count.pending = data.data.length - this.count.completed;
 

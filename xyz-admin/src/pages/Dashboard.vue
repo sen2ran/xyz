@@ -150,7 +150,7 @@ export default {
         this.allOrder = data.data;
         this.count = data.data.length;
         this.completed = data.data.filter(
-          (x) => x.status == "Completed"
+          (x) => x.status == "Compeleted"
         ).length;
         this.pending = data.data.length - this.completed;
 
@@ -201,24 +201,14 @@ export default {
 
       let exportObj = removedDuplicate.map((x) => {
         return {
-          Name: x.id,
-          Count: x.orderID.date,
+          Name: x.name,
+          Count: x.count,
         };
       });
       var headers = {
-        OrderID: "Order Id",
-        Date: "Date",
-        StoreName: "Store Name",
-        StoreLocation: "Store Location",
-        StorePhone: "Store Phone Number",
-        CutomerName: "Customer Name",
-        CustomerPhone: "Customer Phone Number",
-        DeliveryLocation: "Delivery Location",
-        DeliveryCharge: "Delivery Charge",
-        OrderItems: "Order Items",
-        OrderTotal: "Order Total",
-        OrderStatus: "Order Status",
-        PaymentType: "Payment Type",
+        Name: "Name",
+        Count: "Count",
+
       };
       var fileTitle = "Dress Count"; // or 'my-unique-title'
 
@@ -255,6 +245,23 @@ export default {
           document.body.removeChild(link);
         }
       }
+    },
+        convertToCSV(objArray) {
+      var array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
+      var str = "";
+
+      for (var i = 0; i < array.length; i++) {
+        var line = "";
+        for (var index in array[i]) {
+          if (line != "") line += ",";
+
+          line += array[i][index];
+        }
+
+        str += line + "\r\n";
+      }
+
+      return str;
     },
   },
 };

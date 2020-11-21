@@ -147,7 +147,7 @@
             >
               Rs. {{ order.total }}
             </td>
-            <td
+            <!-- <td
               class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5"
             >
               <button
@@ -155,7 +155,7 @@
               >
                 View Details
               </button>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
